@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/drug"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/pills"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tuesday 17, April 2018"
+        android:textSize="@dimen/textSize_18"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/pills"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/date"
+        android:fontFamily="@font/roboto_bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 of 7 Medications completed"
+        android:textSize="@dimen/textSize_small"
+        android:textColor="@color/blue1"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        app:layout_constraintLeft_toLeftOf="@id/date"
+        android:layout_marginTop="5dp"
+        android:id="@+id/numberOfCompleted"
+        android:fontFamily="@font/roboto_medium"/>
+    <ProgressBar
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/numberOfCompleted"
+        app:layout_constraintTop_toBottomOf="@id/numberOfCompleted"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="15dp"
+        android:max="100"
+        android:progress="30"
+
+        />
+
+
+</android.support.constraint.ConstraintLayout>

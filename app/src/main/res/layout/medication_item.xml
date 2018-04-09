@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Headache"
+        android:textColor="@color/black2"
+        android:id="@+id/medicationName"
+        android:textSize="@dimen/textSize_15"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/roboto_bold"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="23 min ago"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/textSize_12"
+        android:id="@+id/time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/roboto_medium"
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You might only need to take an over-the-counter medicine for pain. These medicines usually have few..."
+        android:textColor="@color/ash"
+        android:textSize="@dimen/textSize_small"
+        android:id="@+id/medicationDetails"
+        android:textStyle="normal"
+        android:gravity="fill|left|center"
+        app:layout_constraintTop_toBottomOf="@id/medicationName"
+        android:fontFamily="@font/roboto_medium"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addMedication"
+        android:textStyle="normal"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/black2"
+        android:id="@+id/addMed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/close"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_bold"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="@color/black2"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/close"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        app:layout_constraintLeft_toRightOf="@id/addMed"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white2"
+        app:layout_constraintTop_toBottomOf="@id/addMed"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/line"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Medication"
+        android:textColorHint="@color/black2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        android:background="@drawable/white_background"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/medName"
+        android:inputType="text"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:textColorHint="@color/black2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medName"
+        android:background="@drawable/white_background"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/medDescription"
+        android:inputType="textMultiLine"
+        android:fontFamily="@font/roboto_medium"
+
+        />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/medical_kit"
+        android:background="@drawable/green_button"
+        android:text="@string/addMedication"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_light"
+        app:layout_constraintTop_toBottomOf="@id/medDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:drawablePadding="5dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/addNewMedication"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>
