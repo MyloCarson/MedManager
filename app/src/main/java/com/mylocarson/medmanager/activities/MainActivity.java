@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int FIREBASE_UI_CODE = 1001;
 
     @BindView(R.id.login)
-    private
     Button login;
 
     private FirebaseAuth firebaseAuth;

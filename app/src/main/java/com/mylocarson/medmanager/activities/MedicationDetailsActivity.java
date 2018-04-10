@@ -29,23 +29,18 @@ import io.realm.RealmQuery;
 public class MedicationDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
-    private
     Toolbar toolbar;
 
     @BindView(R.id.medDescription)
-    private
     TextView medDescription;
 
     @BindView(R.id.medInterval)
-    private
     TextView medInterval;
 
     @BindView(R.id.startDate)
-    private
     TextView startDate;
 
     @BindView(R.id.endDate)
-    private
     TextView endate;
 
     private String reminder_id;

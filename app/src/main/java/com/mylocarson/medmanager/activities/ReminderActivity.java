@@ -49,16 +49,15 @@ public class ReminderActivity extends AppCompatActivity {
     private static  final String TAG = ReminderActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
-    private
     Toolbar toolbar;
     private AlertDialog alertDialog;
 
     @BindView(R.id.reminderRecycler)
-    private RecyclerView reminderRecycler;
+    RecyclerView reminderRecycler;
     @BindView(R.id.addNewReminder2)
-    private Button addNewReminder;
+    Button addNewReminder;
     @BindView(R.id.emptyReminderStateLayout)
-    private LinearLayout emptyReminderStateLayout;
+    LinearLayout emptyReminderStateLayout;
 
 
     private Realm realm;

@@ -41,16 +41,13 @@ public class MedicationActivity extends AppCompatActivity {
 
 //    Views
     @BindView(R.id.toolbar)
-    private
     Toolbar toolbar;
     @BindView(R.id.emptyMedicationStateLayout)
-    private
     LinearLayout emptyMedicationStateLayout;
     @BindView(R.id.medRecycler)
-    private
     RecyclerView medRecycler;
     @BindView(R.id.addNewMedication2)
-    private Button addNewMedication2;
+    Button addNewMedication2;
 
 //
 private Realm realm;

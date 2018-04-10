@@ -27,15 +27,12 @@ import butterknife.OnClick;
 public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.email)
-    private
     EditText email;
 
     @BindView(R.id.name)
-    private
     EditText name;
 
     @BindView(R.id.toolbar)
-    private
     Toolbar toolbar;
 
     private FirebaseUser user;
