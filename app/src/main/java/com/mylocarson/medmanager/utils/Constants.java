@@ -4,6 +4,7 @@ package com.mylocarson.medmanager.utils;
  * Created by user on 05/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class Constants {
     private Constants(){}
     public static final String EDIT_TEXT_REQUIRED = "Required";

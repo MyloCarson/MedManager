@@ -13,6 +13,7 @@ import com.mylocarson.medmanager.utils.services.ReminderAlarmService;
  * Created by user on 07/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class AlarmScheduler {
 
     public void setAlarm(Context context, String startDate, String startTime, int frequency, String reminderID) {

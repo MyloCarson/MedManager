@@ -23,6 +23,7 @@ import com.mylocarson.medmanager.activities.ReminderActivity;
  * Created by user on 01/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class DrawerUtil {
     public static void getDrawer(final Activity activity, Toolbar toolbar) {
         //if you want to update the items at a later time it is recommended to keep it in a variable

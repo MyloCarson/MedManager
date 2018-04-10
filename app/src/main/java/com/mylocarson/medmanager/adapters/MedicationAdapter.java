@@ -1,6 +1,7 @@
 package com.mylocarson.medmanager.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,22 +18,24 @@ import java.util.ArrayList;
  * Created by user on 05/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.ViewHolder> {
-    ArrayList<Medication> medicationArrayList;
-    Context mContext;
+    private ArrayList<Medication> medicationArrayList;
+    private Context mContext;
     public MedicationAdapter(Context context, ArrayList<Medication> medicationArrayList) {
         this.mContext = context;
         this.medicationArrayList = medicationArrayList;
     }
 
+    @NonNull
     @Override
-    public MedicationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MedicationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view  = LayoutInflater.from(mContext).inflate(R.layout.medication_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MedicationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MedicationAdapter.ViewHolder holder, int position) {
         final Medication medication = medicationArrayList.get(position);
         holder.medName.setText(medication.getName());
         holder.medDescription.setText(medication.getDescription());

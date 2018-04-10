@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mylocarson.medmanager.BuildConfig;
 import com.mylocarson.medmanager.R;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int FIREBASE_UI_CODE = 1001;
 
     @BindView(R.id.login)
+    private
     Button login;
 
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void fireBaseSignIn(){
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                .setAvailableProviders(Arrays.asList(
+                .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.GoogleBuilder().build()
                         )
                 )

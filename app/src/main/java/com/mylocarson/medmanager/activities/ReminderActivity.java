@@ -1,5 +1,6 @@
 package com.mylocarson.medmanager.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,15 +49,19 @@ public class ReminderActivity extends AppCompatActivity {
     private static  final String TAG = ReminderActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
+    private
     Toolbar toolbar;
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
-    @BindView(R.id.reminderRecycler)RecyclerView reminderRecycler;
-    @BindView(R.id.addNewReminder2)Button addNewReminder;
-    @BindView(R.id.emptyReminderStateLayout)LinearLayout emptyReminderStateLayout;
+    @BindView(R.id.reminderRecycler)
+    private RecyclerView reminderRecycler;
+    @BindView(R.id.addNewReminder2)
+    private Button addNewReminder;
+    @BindView(R.id.emptyReminderStateLayout)
+    private LinearLayout emptyReminderStateLayout;
 
 
-    Realm realm;
+    private Realm realm;
     private String spinner_Value;
     private String selected_medication_id;
 
@@ -75,6 +80,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             this.persistReminders = savedInstanceState.getParcelableArrayList(Constants.REMINDER_ARRAYLIST);
+            assert this.persistReminders != null;
             setupRecycler(this.persistReminders);
         }else{
             getAllReminders();
@@ -125,7 +131,7 @@ public class ReminderActivity extends AppCompatActivity {
     private void reminderForm(final Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = getLayoutInflater();
-        View view  = inflater.inflate(R.layout.reminder_entry,null);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.reminder_entry, null);
         builder.setView(view);
 
         final EditText interval, startDate, endDate, startTime;
@@ -219,7 +225,7 @@ public class ReminderActivity extends AppCompatActivity {
 
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override
-                        public void execute(Realm realm) {
+                        public void execute(@NonNull Realm realm) {
                             Reminder reminder = realm.createObject(Reminder.class, reminderID);
                             reminder.setMedicationName(medicationName_string);
                             reminder.setFrequency(Integer.valueOf(interval_string));
@@ -248,7 +254,7 @@ public class ReminderActivity extends AppCompatActivity {
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
-                        public void onError(Throwable error) {
+                        public void onError(@NonNull Throwable error) {
                             Log.e(TAG, "onError: ",error );
                         }
                     });

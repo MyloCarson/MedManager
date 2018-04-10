@@ -12,6 +12,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by user on 05/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class Reminder extends RealmObject implements Parcelable {
 
 

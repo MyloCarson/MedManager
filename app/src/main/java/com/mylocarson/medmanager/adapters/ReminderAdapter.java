@@ -3,6 +3,7 @@ package com.mylocarson.medmanager.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
  * Created by user on 05/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHolder>{
     private Context mContext;
     private ArrayList<Reminder> reminderArrayList;
@@ -30,14 +32,15 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
         this.reminderArrayList = reminders;
     }
 
+    @NonNull
     @Override
-    public ReminderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReminderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view  = LayoutInflater.from(mContext).inflate(R.layout.reminder_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ReminderAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReminderAdapter.ViewHolder holder, int position) {
         final Reminder reminder = reminderArrayList.get(position);
         holder.medicationName.setText(reminder.getMedicationName());
         String frequencyString = reminder.getFrequency() == 1 ? Integer.toString(reminder.getFrequency()) + " time" :

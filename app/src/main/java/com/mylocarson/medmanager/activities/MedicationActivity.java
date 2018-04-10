@@ -1,7 +1,9 @@
 package com.mylocarson.medmanager.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,17 +41,21 @@ public class MedicationActivity extends AppCompatActivity {
 
 //    Views
     @BindView(R.id.toolbar)
+    private
     Toolbar toolbar;
     @BindView(R.id.emptyMedicationStateLayout)
+    private
     LinearLayout emptyMedicationStateLayout;
     @BindView(R.id.medRecycler)
+    private
     RecyclerView medRecycler;
-    @BindView(R.id.addNewMedication2)Button addNewMedication2;
+    @BindView(R.id.addNewMedication2)
+    private Button addNewMedication2;
 
 //
-    Realm realm;
-    AlertDialog alertDialog;
-    ArrayList<Medication> persistMedications = new ArrayList<>();
+private Realm realm;
+    private AlertDialog alertDialog;
+    private ArrayList<Medication> persistMedications = new ArrayList<>();
 
 
     @Override
@@ -98,7 +104,7 @@ public class MedicationActivity extends AppCompatActivity {
     private void medicationForm(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = getLayoutInflater();
-        View view  = inflater.inflate(R.layout.medication_entry,null);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.medication_entry, null);
         builder.setView(view);
 
         final EditText medicationName,description;
@@ -124,7 +130,7 @@ public class MedicationActivity extends AppCompatActivity {
                     description_string = description.getText().toString();
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override
-                        public void execute(Realm realm) {
+                        public void execute(@NonNull Realm realm) {
                             Medication medication = realm.createObject(Medication.class, UUID.randomUUID().toString());
                             medication.setName(medicationName_string);
                             medication.setDescription(description_string);
@@ -140,7 +146,7 @@ public class MedicationActivity extends AppCompatActivity {
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
-                        public void onError(Throwable error) {
+                        public void onError(@NonNull Throwable error) {
 //                            Toast.makeText(MedicationActivity.this,"Error",Toast.LENGTH_SHORT).show();
                             Snackbar.make(medRecycler, "Error with database ", Snackbar.LENGTH_SHORT).show();
                             Log.e(MainActivity.class.getSimpleName(),"Realm Error",error);

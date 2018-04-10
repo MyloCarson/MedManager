@@ -1,5 +1,6 @@
 package com.mylocarson.medmanager.utils;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -26,6 +27,7 @@ import java.util.GregorianCalendar;
  * Created by user on 05/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class Utilities {
     private static final String TAG  = Utilities.class.getSimpleName();
 
@@ -40,7 +42,7 @@ public class Utilities {
     }
 
     public static boolean isEditTextValid(EditText editText){
-        boolean result = false;
+        boolean result;
         result = !(editText.getText().toString().isEmpty() && !(editText.getText().toString().length() > 0));
 
         return result;
@@ -53,10 +55,11 @@ public class Utilities {
         Date mdate;
         Date theDate;
         Date today;
-        SimpleDateFormat parser=new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("E MMM d yyyy");
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleFormat = new SimpleDateFormat("E MMM d yyyy");
         try {
             mdate = parser.parse(mDate);
             dDate = simpleDateFormat.format(mdate);
@@ -102,28 +105,27 @@ public class Utilities {
     }
 
     public static ArrayAdapter<String> arrayAdapter(Context context,String[] arrayOfStrings){
-         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                context,android.R.layout.simple_list_item_1,arrayOfStrings){
+        return new ArrayAdapter<String>(
+                context, android.R.layout.simple_list_item_1, arrayOfStrings) {
             @Override
-            public boolean isEnabled(int position){
+            public boolean isEnabled(int position) {
                 return position != 0;
             }
+
             @Override
             public View getDropDownView(int position, View convertView,
                                         ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
-                if(position == 0){
+                if (position == 0) {
                     // Set the hint text color gray
                     tv.setTextColor(Color.GRAY);
-                }
-                else {
+                } else {
                     tv.setTextColor(Color.BLACK);
                 }
                 return view;
             }
         };
-       return spinnerArrayAdapter;
     }
 
     public static void toggleVisibility(int value, View...views){
@@ -175,7 +177,7 @@ public class Utilities {
         startDate = startDate.concat(" " + startTime);
         endDate = endDate.concat(" " + startTime);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
         try {
             fromDate = simpleDateFormat.parse(startDate);
             calendar.setTime(fromDate);
@@ -214,16 +216,15 @@ public class Utilities {
 
     public static boolean validateStartDate(String startDate, String endDate){
         boolean value = false;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date fromDate,toDate;
 
-        try{
+        try {
             fromDate = simpleDateFormat.parse(startDate);
             toDate = simpleDateFormat.parse(endDate);
 
-            if (fromDate.before(toDate)){
-                value = true;
-            } else value = toDate.equals(fromDate);
+            value = fromDate.before(toDate) || toDate.equals(fromDate);
+            ;
         }catch (ParseException e){
             // TODO: 07/04/2018 handle this exception
         }
@@ -240,10 +241,10 @@ public class Utilities {
         Calendar calendar = Calendar.getInstance();
         startDate = startDate.concat(" " + startTime);
 
-        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:MM");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat hourformat = new SimpleDateFormat("HH");
-        SimpleDateFormat minutesFormat = new SimpleDateFormat("MM");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourformat = new SimpleDateFormat("HH");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat minutesFormat = new SimpleDateFormat("MM");
         try {
             offsetDate = parser.parse(startDate);
             fromDate = simpleDateFormat.parse(simpleDateFormat.format(offsetDate));
@@ -284,14 +285,15 @@ public class Utilities {
 
     public static String convertToReadableDate(String date) {
         String value = "";
-        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM d yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("EEE MMM d yyyy");
         Date fromDate;
 
         try {
             fromDate = parser.parse(date);
             value = format.format(fromDate);
-        } catch (ParseException e) {
+        } catch (ParseException ignored) {
+
         }
 
         return value;

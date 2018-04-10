@@ -27,6 +27,7 @@ import io.realm.RealmResults;
  * Created by user on 07/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class ReminderAlarmService extends IntentService {
     private static final String TAG  = ReminderAlarmService.class.getSimpleName();
 
@@ -45,6 +46,7 @@ public class ReminderAlarmService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        assert intent != null;
         String reminder_ID = intent.getStringExtra(Constants.REMINDER_ID);
 
         Intent action =  new Intent(this, ReminderActivity.class);
@@ -55,13 +57,15 @@ public class ReminderAlarmService extends IntentService {
 
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         long[] vibrationPattern = {1000,1000,1000,1000};
-        NotificationCompat.Builder builder = null;
+        NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID,Constants.CHANNEL_NAME,importance);
+            assert notificationManager != null;
             notificationManager.createNotificationChannel(channel);
             builder = new NotificationCompat.Builder(getApplicationContext(),channel.getId());
         }else{
+            //noinspection deprecation
             builder = new NotificationCompat.Builder(getApplicationContext());
         }
         builder = builder.setSmallIcon(R.mipmap.ic_launcher)
@@ -73,12 +77,14 @@ public class ReminderAlarmService extends IntentService {
                 .setContentTitle("MedManager")
                 .setContentText("Use ".concat(getReminderMedicationName(reminder_ID)).concat(" now!!!"))
                 .setAutoCancel(true);
+        assert notificationManager != null;
         notificationManager.notify(NOTIFICATION_ID,builder.build());
 
 
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     private String getReminderMedicationName(String reminderID){
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Reminder> realmQuery = realm.where(Reminder.class);

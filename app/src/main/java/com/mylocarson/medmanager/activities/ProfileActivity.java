@@ -27,17 +27,20 @@ import butterknife.OnClick;
 public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.email)
+    private
     EditText email;
 
     @BindView(R.id.name)
+    private
     EditText name;
 
     @BindView(R.id.toolbar)
+    private
     Toolbar toolbar;
 
-    FirebaseUser user;
-    FirebaseAuth firebaseAuth;
-    AlertDialog alertDialog;
+    private FirebaseUser user;
+    private FirebaseAuth firebaseAuth;
+    private AlertDialog alertDialog;
 
 
 
@@ -58,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
             String name = user.getDisplayName();
             String email = user.getEmail();
 
+            assert name != null;
+            assert email != null;
             setViews(name, email);
 
 

@@ -7,6 +7,7 @@ import android.content.Context;
  * Created by user on 07/04/2018.
  */
 
+@SuppressWarnings("ALL")
 public class AlarmMangerProvider {
     private static final String TAG = AlarmMangerProvider.class.getSimpleName();
 

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,29 +25,36 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
+@SuppressWarnings("ALL")
 public class MedicationDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
+    private
     Toolbar toolbar;
 
     @BindView(R.id.medDescription)
+    private
     TextView medDescription;
 
     @BindView(R.id.medInterval)
+    private
     TextView medInterval;
 
     @BindView(R.id.startDate)
+    private
     TextView startDate;
 
     @BindView(R.id.endDate)
+    private
     TextView endate;
 
-    private String medication_id, reminder_id;
-    Bundle data;
-    Realm realm;
-    Medication medication = new Medication();
-    Reminder reminder = new Reminder();
-    Context context ;
+    private String reminder_id;
+    private Bundle data;
+    private Realm realm;
+    private Medication medication = new Medication();
+    private Reminder reminder = new Reminder();
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +71,14 @@ public class MedicationDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent!=null){
-           data = intent.getExtras();
-           medication_id = data.getString(Constants.MEDICATION_ID);
-           reminder_id = data.getString(Constants.REMINDER_ID);
+            data = intent.getExtras();
+            String medication_id = data.getString(Constants.MEDICATION_ID);
+            reminder_id = data.getString(Constants.REMINDER_ID);
 
-           reminder = fetchReminder(reminder_id);
-           medication = fetchMedication(medication_id);
-           getSupportActionBar().setTitle(medication.getName().concat(" Reminder"));
-           setupViews(medication, reminder);
+            reminder = fetchReminder(reminder_id);
+            medication = fetchMedication(medication_id);
+            getSupportActionBar().setTitle(medication.getName().concat(" Reminder"));
+            setupViews(medication, reminder);
         }
 
     }
@@ -114,16 +122,14 @@ public class MedicationDetailsActivity extends AppCompatActivity {
 
     private Reminder fetchReminder(String reminder_id){
         RealmQuery<Reminder>  realmQuery = realm.where(Reminder.class);
-        Reminder reminder = realmQuery.equalTo("id",reminder_id).findFirst();
 
-        return reminder;
+        return realmQuery.equalTo("id", reminder_id).findFirst();
 
     }
 
     private Medication fetchMedication(String medication_id){
         RealmQuery<Medication> realmQuery = realm.where(Medication.class);
-        Medication medication = realmQuery.equalTo("id", medication_id).findFirst();
-        return medication;
+        return realmQuery.equalTo("id", medication_id).findFirst();
     }
 
     private void setupViews(Medication medication, Reminder reminder){
@@ -160,7 +166,7 @@ public class MedicationDetailsActivity extends AppCompatActivity {
         if (reminder!=null){
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     reminder.deleteFromRealm();
                     new AlarmScheduler().cancelAlarm(context,reminder_id);
                     Intent intent  = new Intent(context,ReminderActivity.class);

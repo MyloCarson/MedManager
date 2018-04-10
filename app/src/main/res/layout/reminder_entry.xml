@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -92,12 +93,11 @@
         android:layout_marginTop="15dp"
         android:id="@+id/medStartDate"
         android:inputType="none"
-        android:editable="false"
         android:focusable="false"
         android:fontFamily="@font/roboto_regular"
         android:textSize="@dimen/textSize_15"
 
-        />
+        tools:ignore="TextFields" />
 
     <EditText
         android:layout_width="match_parent"
@@ -114,11 +114,10 @@
         android:id="@+id/medEndDate"
         android:inputType="none"
         android:focusable="false"
-        android:editable="false"
         android:fontFamily="@font/roboto_regular"
         android:textSize="@dimen/textSize_15"
 
-        />
+        tools:ignore="TextFields" />
 
     <EditText
         android:layout_width="match_parent"
@@ -135,7 +134,6 @@
         android:id="@+id/medStartTime"
         android:inputType="none"
         android:focusable="false"
-        android:editable="false"
         android:fontFamily="@font/roboto_regular"
         android:textSize="@dimen/textSize_15"
 
