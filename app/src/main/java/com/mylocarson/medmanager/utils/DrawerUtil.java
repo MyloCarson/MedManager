@@ -11,12 +11,11 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mylocarson.medmanager.R;
 import com.mylocarson.medmanager.activities.MedicationActivity;
+import com.mylocarson.medmanager.activities.ProfileActivity;
 import com.mylocarson.medmanager.activities.ReminderActivity;
 
 
@@ -37,14 +36,11 @@ public class DrawerUtil {
 //                .withName(R.string.tournament).withIcon(R.drawable.tournamenticon);
 
 
-//        SecondaryDrawerItem medicationDetailsActivity = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.title_activity_medication_details);
 //                .withName(R.string.settings).withIcon(R.drawable.ic_settings_black_48px);
         SecondaryDrawerItem reminderActivity = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.title_activity_reminder);
-//                .withName(R.string.about).withIcon(R.drawable.ic_info_black_24px);
-//        SecondaryDrawerItem drawerItemHelp = new SecondaryDrawerItem().withIdentifier(5).withName("Sec 5");
-//                .withName(R.string.help).withIcon(R.drawable.ic_help_black_24px);
-//        SecondaryDrawerItem drawerItemDonate = new SecondaryDrawerItem().withIdentifier(6).withName("Sec 6");
-//                .withName(R.string.donate).withIcon(R.drawable.ic_payment_black_24px);
+        SecondaryDrawerItem profileActivity = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.profile);
+
+//
 
 
 
@@ -65,8 +61,9 @@ public class DrawerUtil {
 //                        drawerEmptyItem,drawerEmptyItem,drawerEmptyItem,
                         medicationActivity,
                         new DividerDrawerItem(),
-                        reminderActivity
-//                        drawerItemAbout,
+                        reminderActivity,
+                        new DividerDrawerItem(),
+                        profileActivity
 //                        drawerItemSettings
 //                        drawerItemHelp,
 //                        drawerItemDonate
@@ -82,6 +79,10 @@ public class DrawerUtil {
                         }
                         if (drawerItem.getIdentifier() == 1 && !(activity instanceof ReminderActivity) ){
                             Intent intent = new Intent(activity, ReminderActivity.class);
+                            view.getContext().startActivity(intent);
+                        }
+                        if (drawerItem.getIdentifier() == 2 && !(activity instanceof ProfileActivity)) {
+                            Intent intent = new Intent(activity, ProfileActivity.class);
                             view.getContext().startActivity(intent);
                         }
                         return true;

@@ -13,6 +13,7 @@ import com.mylocarson.medmanager.R;
 import com.mylocarson.medmanager.activities.MedicationDetailsActivity;
 import com.mylocarson.medmanager.models.Reminder;
 import com.mylocarson.medmanager.utils.Constants;
+import com.mylocarson.medmanager.utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -43,8 +44,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
                 Integer.toString(reminder.getFrequency())+ " times";
 
         holder.interval.setText(frequencyString);
-        holder.startDate.setText(reminder.getStartDate());
-        holder.endDate.setText(reminder.getEndDate());
+        holder.startDate.setText(Utilities.convertToReadableDate(reminder.getStartDate()));
+        holder.endDate.setText(Utilities.convertToReadableDate(reminder.getEndDate()));
+        holder.startTime.setText(reminder.getStartTime());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +71,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView medicationName, interval,startDate,endDate;
+        public TextView medicationName, startTime, interval, startDate, endDate;
         public View view;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -78,6 +80,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             interval = itemView.findViewById(R.id.medInterval);
             startDate = itemView.findViewById(R.id.medStartDate);
             endDate = itemView.findViewById(R.id.medEndDate);
+            startTime = itemView.findViewById(R.id.medStartTime);
             view = itemView;
         }
     }

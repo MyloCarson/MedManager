@@ -2,7 +2,7 @@ package com.mylocarson.medmanager.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.mylocarson.medmanager.R;
 import com.mylocarson.medmanager.adapters.ReminderAdapter;
@@ -45,7 +46,6 @@ import io.realm.RealmResults;
 
 public class ReminderActivity extends AppCompatActivity {
     private static  final String TAG = ReminderActivity.class.getSimpleName();
-    private ArrayList<Reminder> persistReminders = new ArrayList<>();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -61,6 +61,8 @@ public class ReminderActivity extends AppCompatActivity {
     private String selected_medication_id;
 
     private boolean isSelected = false;
+    private ArrayList<Reminder> persistReminders = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +73,7 @@ public class ReminderActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
         DrawerUtil.getDrawer(this,toolbar);
 
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             this.persistReminders = savedInstanceState.getParcelableArrayList(Constants.REMINDER_ARRAYLIST);
             setupRecycler(this.persistReminders);
         }else{
@@ -80,17 +82,18 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        outState.putParcelableArrayList(Constants.REMINDER_ARRAYLIST,persistReminders);
-        super.onSaveInstanceState(outState, outPersistentState);
-
-    }
-
-    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         persistReminders = savedInstanceState.getParcelableArrayList(Constants.REMINDER_ARRAYLIST);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(Constants.REMINDER_ARRAYLIST, persistReminders);
+        super.onSaveInstanceState(outState);
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,7 +128,7 @@ public class ReminderActivity extends AppCompatActivity {
         View view  = inflater.inflate(R.layout.reminder_entry,null);
         builder.setView(view);
 
-        final EditText interval, startDate, endDate;
+        final EditText interval, startDate, endDate, startTime;
         Button addMed;
         Button close;
         final Spinner spinner;
@@ -138,6 +141,7 @@ public class ReminderActivity extends AppCompatActivity {
         startDate = view.findViewById(R.id.medStartDate);
         endDate = view.findViewById(R.id.medEndDate);
         addMed = view.findViewById(R.id.addNewMedication);
+        startTime = view.findViewById(R.id.medStartTime);
         close = view.findViewById(R.id.close);
 
         RealmQuery<Medication> realmQuery = realm.where(Medication.class);
@@ -186,11 +190,12 @@ public class ReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                final String medicationName_string,description_string,interval_string,startDate_string,endDate_string;
+                final String medicationName_string, start_time_string, interval_string, startDate_string, endDate_string;
                 medicationName_string = spinner_Value;
                 interval_string = interval.getText().toString();
                 startDate_string = startDate.getText().toString();
                 endDate_string = endDate.getText().toString();
+                start_time_string = startTime.getText().toString();
                 final String reminderID = UUID.randomUUID().toString();
 
                 if (!isSelected){
@@ -207,6 +212,8 @@ public class ReminderActivity extends AppCompatActivity {
                 }else if (!Utilities.validateStartDate(startDate_string,endDate_string)){
                     Snackbar snackbar = Snackbar.make(endDate,"Start Date is greater than End Date",Snackbar.LENGTH_SHORT);
                     snackbar.show();
+                } else if (!Utilities.isEditTextValid(startTime)) {
+                    Utilities.validateEditText(startTime);
                 }else{
 
 
@@ -219,15 +226,20 @@ public class ReminderActivity extends AppCompatActivity {
                             reminder.setMedicationID(selected_medication_id);
                             reminder.setStartDate(startDate_string);
                             reminder.setEndDate(endDate_string);
+                            reminder.setStartTime(start_time_string);
+                            Log.e(TAG, "execute: " + reminder.toString());
 
                         }
                     }, new Realm.Transaction.OnSuccess() {
                         @Override
                         public void onSuccess() {
+                            Toast.makeText(context, "" + Integer.valueOf(interval_string), Toast.LENGTH_SHORT).show();
                             if (Integer.valueOf(interval_string) == 1){
-                                alarmScheduler.setAlarm(context,startDate_string,endDate_string,reminderID);
+                                Toast.makeText(ReminderActivity.this, "Here", Toast.LENGTH_SHORT).show();
+                                alarmScheduler.setAlarmNow(context, startDate_string, endDate_string, start_time_string, reminderID);
                             }else{
-                                alarmScheduler.setRepeatingAlarm(context,startDate_string,endDate_string,Integer.valueOf(interval_string),reminderID);
+                                Toast.makeText(ReminderActivity.this, "Bigger here", Toast.LENGTH_SHORT).show();
+                                alarmScheduler.setAlarm(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
 
                             }
                             getAllReminders();
@@ -268,11 +280,17 @@ public class ReminderActivity extends AppCompatActivity {
             }
         });
 
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utilities.showTimePicker(context, startTime);
+            }
+        });
+
     }
 
-    private void setupRecycler(ArrayList<Reminder> reminderArrayList){
+    private void setupRecycler(@NonNull ArrayList<Reminder> reminderArrayList) {
         if(!(reminderArrayList.size() > 0)){
-            invalidateOptionsMenu();
             Utilities.toggleVisibility(1,emptyReminderStateLayout);
             Utilities.toggleVisibility(0,reminderRecycler,addNewReminder);
         }else{
@@ -286,8 +304,6 @@ public class ReminderActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         reminderRecycler.setLayoutManager(layoutManager);
         reminderRecycler.setItemAnimator(new DefaultItemAnimator());
-//        reminderRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
     }
 
     private void getAllReminders(){

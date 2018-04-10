@@ -14,13 +14,15 @@ import io.realm.annotations.PrimaryKey;
 
 public class Reminder extends RealmObject implements Parcelable {
 
+
+    @PrimaryKey
+    private String id = UUID.randomUUID().toString();
     private String medicationName;
+    private String medicationID;
     private int frequency;
     private String startDate;
     private String endDate;
-    @PrimaryKey
-    private String id = UUID.randomUUID().toString();
-    private String medicationID;
+    private String startTime;
 
 
 
@@ -71,16 +73,14 @@ public class Reminder extends RealmObject implements Parcelable {
         this.medicationID = medicationID;
     }
 
-    @Override
-    public String toString() {
-        return "Reminder{" +
-                "medicationName='" + medicationName + '\'' +
-                ", frequency=" + frequency +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", id='" + id + '\'' +
-                '}';
+    public String getStartTime() {
+        return startTime;
     }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
 
     @Override
     public int describeContents() {
@@ -88,25 +88,40 @@ public class Reminder extends RealmObject implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "Reminder{" +
+                "id='" + id + '\'' +
+                ", medicationName='" + medicationName + '\'' +
+                ", medicationID='" + medicationID + '\'' +
+                ", frequency=" + frequency +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", startTime='" + startTime + '\'' +
+                '}';
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.medicationName);
+        dest.writeString(this.medicationID);
         dest.writeInt(this.frequency);
         dest.writeString(this.startDate);
         dest.writeString(this.endDate);
-        dest.writeString(this.id);
-        dest.writeString(this.medicationID);
+        dest.writeString(this.startTime);
     }
 
     protected Reminder(Parcel in) {
+        this.id = in.readString();
         this.medicationName = in.readString();
+        this.medicationID = in.readString();
         this.frequency = in.readInt();
         this.startDate = in.readString();
         this.endDate = in.readString();
-        this.id = in.readString();
-        this.medicationID = in.readString();
+        this.startTime = in.readString();
     }
 
-    public static final Parcelable.Creator<Reminder> CREATOR = new Parcelable.Creator<Reminder>() {
+    public static final Creator<Reminder> CREATOR = new Creator<Reminder>() {
         @Override
         public Reminder createFromParcel(Parcel source) {
             return new Reminder(source);

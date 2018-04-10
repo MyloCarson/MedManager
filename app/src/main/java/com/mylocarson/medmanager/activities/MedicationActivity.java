@@ -2,6 +2,7 @@ package com.mylocarson.medmanager.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.mylocarson.medmanager.R;
 import com.mylocarson.medmanager.adapters.MedicationAdapter;
@@ -134,14 +134,15 @@ public class MedicationActivity extends AppCompatActivity {
                     }, new Realm.Transaction.OnSuccess() {
                         @Override
                         public void onSuccess() {
-                            Toast.makeText(MedicationActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MedicationActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
                             getAllMedications();
                             alertDialog.dismiss();
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
                         public void onError(Throwable error) {
-                            Toast.makeText(MedicationActivity.this,"Error",Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MedicationActivity.this,"Error",Toast.LENGTH_SHORT).show();
+                            Snackbar.make(medRecycler, "Error with database ", Snackbar.LENGTH_SHORT).show();
                             Log.e(MainActivity.class.getSimpleName(),"Realm Error",error);
                         }
                     });

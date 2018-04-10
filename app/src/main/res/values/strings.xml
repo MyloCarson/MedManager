@@ -23,6 +23,7 @@ continue with Med Manager</string>
     <string name="frequency">Frequency or interval for dosage</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="frequency_text">Frequency</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
 
@@ -32,5 +33,10 @@ continue with Med Manager</string>
     <!-- Twitter consumer key and secret -->
     <string name="twitter_consumer_key" translatable="false">jTWd2NWJ4TTiXZc5Hm2Cp6DR5</string>
     <string name="twitter_consumer_secret" translatable="false">ko0SuawMFmii7hq5HKl8Qsj7j8kkTABoXSzg3m7xR7GFvRIwoU</string>
+    <string name="edit_small">edit</string>
+    <string name="update">Update profile</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="startTime">Start Time</string>
+    <string name="profile">Profile</string>
 
 </resources>

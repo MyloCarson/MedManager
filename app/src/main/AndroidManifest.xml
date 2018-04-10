@@ -30,11 +30,11 @@
         <activity
             android:name=".activities.MedicationActivity"
             android:label="@string/medication"
-            android:theme="@style/CustomTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ReminderActivity"
             android:label="@string/title_activity_reminder"
-            android:theme="@style/CustomTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MedicationDetailsActivity"
             android:label="@string/title_activity_medication_details"
@@ -48,7 +48,10 @@
             android:name=".utils.services.ReminderAlarmService"
             android:exported="false" />
 
-        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="@string/profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

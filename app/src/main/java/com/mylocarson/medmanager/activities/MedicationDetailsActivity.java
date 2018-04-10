@@ -128,7 +128,10 @@ public class MedicationDetailsActivity extends AppCompatActivity {
 
     private void setupViews(Medication medication, Reminder reminder){
         medDescription.setText(medication.getDescription());
-        medInterval.setText(Integer.toString(reminder.getFrequency()));
+        String frequencyString = reminder.getFrequency() == 1 ? Integer.toString(reminder.getFrequency()) + " time" :
+                Integer.toString(reminder.getFrequency()) + " times";
+
+        medInterval.setText(frequencyString);
         startDate.setText(reminder.getStartDate());
         endate.setText(reminder.getEndDate());
     }

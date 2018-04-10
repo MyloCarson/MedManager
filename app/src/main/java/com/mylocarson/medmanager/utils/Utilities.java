@@ -1,6 +1,7 @@
 package com.mylocarson.medmanager.utils;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -11,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,11 +41,7 @@ public class Utilities {
 
     public static boolean isEditTextValid(EditText editText){
         boolean result = false;
-        if (editText.getText().toString().isEmpty() && !(editText.getText().toString().length() > 0) ){
-            result = false;
-        }else{
-            result = true;
-        }
+        result = !(editText.getText().toString().isEmpty() && !(editText.getText().toString().length() > 0));
 
         return result;
     }
@@ -107,16 +106,7 @@ public class Utilities {
                 context,android.R.layout.simple_list_item_1,arrayOfStrings){
             @Override
             public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return position != 0;
             }
             @Override
             public View getDropDownView(int position, View convertView,
@@ -163,7 +153,18 @@ public class Utilities {
         datePickerDialog.show();
     }
 
-    public static ArrayList<Long> getArrayListOfLongTimeMillis(String startDate, String endDate){
+    public static void showTimePicker(Context context, final EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
+                editText.setText("" + hour + ":" + minutes);
+            }
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        timePickerDialog.show();
+    }
+
+    public static ArrayList<Long> getArrayListOfLongTimeMillis(String startDate, String endDate, String startTime) {
         ArrayList<Long> longArrayListOfTimeMillis = new ArrayList<>();
 
         Date fromDate,toDate;
@@ -171,7 +172,10 @@ public class Utilities {
 
         Calendar calendar2 = new GregorianCalendar();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        startDate = startDate.concat(" " + startTime);
+        endDate = endDate.concat(" " + startTime);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
         try {
             fromDate = simpleDateFormat.parse(startDate);
             calendar.setTime(fromDate);
@@ -219,17 +223,78 @@ public class Utilities {
 
             if (fromDate.before(toDate)){
                 value = true;
-            }else if (toDate.equals(fromDate)){
-                value = true;
-            }
-            else{
-                value = false;
-            }
+            } else value = toDate.equals(fromDate);
         }catch (ParseException e){
             // TODO: 07/04/2018 handle this exception
         }
         return value;
     }
 
+    public static ArrayList<Long> calculateAlarmtimeInMillis(Context context, String startDate, String startTime, int frequency) {
+        ArrayList<Long> longArrayListOfTimeMillis = new ArrayList<>();
+        Date offsetDate, fromDate;
+        int offsetHour, offsetMins;
+//         startDate ="10/4/2017";
+//         frequency = 4;
+//        startTime = "7:9";
+        Calendar calendar = Calendar.getInstance();
+        startDate = startDate.concat(" " + startTime);
+
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat hourformat = new SimpleDateFormat("HH");
+        SimpleDateFormat minutesFormat = new SimpleDateFormat("MM");
+        try {
+            offsetDate = parser.parse(startDate);
+            fromDate = simpleDateFormat.parse(simpleDateFormat.format(offsetDate));
+            offsetHour = Integer.parseInt(hourformat.format(offsetDate));
+            offsetMins = Integer.parseInt(minutesFormat.format(offsetDate));
+            calendar.setTime(fromDate);
+            int range = 24 / frequency;
+
+            int newOffset;
+
+
+            for (int i = 0; i <= frequency; i++) {
+                newOffset = offsetHour + range++;
+                Toast.makeText(context, "" + newOffset, Toast.LENGTH_SHORT).show();
+
+                if (newOffset > 24) {
+                    newOffset = newOffset % 24;
+                    calendar.add(Calendar.DATE, 1);
+                    calendar.add(Calendar.HOUR_OF_DAY, newOffset);
+                    calendar.add(Calendar.MINUTE, offsetMins);
+                    longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
+                    Toast.makeText(context, "Longtime inner " + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+                }
+                calendar.add(Calendar.HOUR_OF_DAY, newOffset);
+                calendar.add(Calendar.MINUTE, offsetMins);
+                longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
+                Toast.makeText(context, "Longtime " + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (ParseException e) {
+            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "calculateAlarmtimeInMillis: ", e);
+        }
+
+        return longArrayListOfTimeMillis;
+
+    }
+
+    public static String convertToReadableDate(String date) {
+        String value = "";
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM d yyyy");
+        Date fromDate;
+
+        try {
+            fromDate = parser.parse(date);
+            value = format.format(fromDate);
+        } catch (ParseException e) {
+        }
+
+        return value;
+    }
 
 }
