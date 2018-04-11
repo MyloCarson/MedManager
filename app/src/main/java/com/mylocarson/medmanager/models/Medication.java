@@ -3,6 +3,7 @@ package com.mylocarson.medmanager.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -19,7 +20,7 @@ public class Medication extends RealmObject implements Parcelable {
     private String id = UUID.randomUUID().toString();
     private String name;
     private String description;
-    private String dateCreated;
+    private Date dateCreated;
 
     public Medication() {
     }
@@ -45,11 +46,11 @@ public class Medication extends RealmObject implements Parcelable {
         this.description = description;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -78,17 +79,18 @@ public class Medication extends RealmObject implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeString(this.description);
-        dest.writeString(this.dateCreated);
+        dest.writeLong(this.dateCreated != null ? this.dateCreated.getTime() : -1);
     }
 
     protected Medication(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
         this.description = in.readString();
-        this.dateCreated = in.readString();
+        long tmpDateCreated = in.readLong();
+        this.dateCreated = tmpDateCreated == -1 ? null : new Date(tmpDateCreated);
     }
 
-    public static final Parcelable.Creator<Medication> CREATOR = new Parcelable.Creator<Medication>() {
+    public static final Creator<Medication> CREATOR = new Creator<Medication>() {
         @Override
         public Medication createFromParcel(Parcel source) {
             return new Medication(source);

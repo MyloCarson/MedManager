@@ -26,24 +26,11 @@ import com.mylocarson.medmanager.activities.ReminderActivity;
 @SuppressWarnings("ALL")
 public class DrawerUtil {
     public static void getDrawer(final Activity activity, Toolbar toolbar) {
-        //if you want to update the items at a later time it is recommended to keep it in a variable
+
         PrimaryDrawerItem medicationActivity= new PrimaryDrawerItem().withIdentifier(0).withName(R.string.medication);
-//        medicationActivity.withEnabled(false);
 
-//        PrimaryDrawerItem medicationDetailsActivity = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.title_activity_medication_details);
-//                .withName(R.string.manage_player).withIcon(R.drawable.ic_people_outline_black_48px);
-//        PrimaryDrawerItem reminderActivity = new PrimaryDrawerItem()
-//                .withIdentifier(2).withName(R.string.title_activity_reminder);
-//                .withName(R.string.tournament).withIcon(R.drawable.tournamenticon);
-
-
-//                .withName(R.string.settings).withIcon(R.drawable.ic_settings_black_48px);
         SecondaryDrawerItem reminderActivity = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.title_activity_reminder);
         SecondaryDrawerItem profileActivity = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.profile);
-
-//
-
-
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(activity)
@@ -59,20 +46,16 @@ public class DrawerUtil {
                 .withCloseOnClick(true)
                 .withSelectedItem(-1)
                 .addDrawerItems(
-//                        drawerEmptyItem,drawerEmptyItem,drawerEmptyItem,
                         medicationActivity,
                         new DividerDrawerItem(),
                         reminderActivity,
                         new DividerDrawerItem(),
                         profileActivity
-//                        drawerItemSettings
-//                        drawerItemHelp,
-//                        drawerItemDonate
+
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        Toast.makeText(activity,""+drawerItem.getIdentifier(),Toast.LENGTH_SHORT).show();
                         if (drawerItem.getIdentifier() == 0 && !(activity instanceof MedicationActivity)) {
                             // load tournament screen
                             Intent intent = new Intent(activity, MedicationActivity.class);

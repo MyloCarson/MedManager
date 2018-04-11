@@ -39,16 +39,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
         final Medication medication = medicationArrayList.get(position);
         holder.medName.setText(medication.getName());
         holder.medDescription.setText(medication.getDescription());
-        holder.dateCreated.setText(Utilities.convertDate(medication.getDateCreated()));
-
-//        holder.view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), MedicationDetailsActivity.class);
-//                intent.putExtra(Constants.MEDICATION_ID, medication.getId());
-//                mContext.startActivity(intent);
-//            }
-//        });
+        holder.dateCreated.setText(Utilities.convertDate(medication.getDateCreated().toString()));
     }
 
     @Override

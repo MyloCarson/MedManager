@@ -235,9 +235,6 @@ public class Utilities {
         ArrayList<Long> longArrayListOfTimeMillis = new ArrayList<>();
         Date offsetDate, fromDate;
         int offsetHour, offsetMins;
-//         startDate ="10/4/2017";
-//         frequency = 4;
-//        startTime = "7:9";
         Calendar calendar = Calendar.getInstance();
         startDate = startDate.concat(" " + startTime);
 
@@ -299,4 +296,42 @@ public class Utilities {
         return value;
     }
 
+    public static long calculateTimeInMillis(String startDate, String startTime) {
+        long longTimeInMillis = 0L;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourformat = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat minutesFormat = new SimpleDateFormat("mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        Date fromDate, selectedDate, selectedTime;
+        startDate = startDate.concat(" " + startTime);
+        try {
+            fromDate = parser.parse(startDate);
+            selectedTime = hourformat.parse(startTime);
+            String time = hourformat.format(selectedTime);
+            int year = Utilities.getIntegerValue(yearFormat.format(fromDate));
+            int month = Utilities.getIntegerValue(monthFormat.format(fromDate));
+            int day = Utilities.getIntegerValue(dayFormat.format(fromDate));
+            String times[] = time.split(":");
+            calendar.setTime(fromDate);
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times[0]));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(times[1]));
+
+            longTimeInMillis = calendar.getTimeInMillis();
+
+
+        } catch (ParseException e) {
+            // TODO: 11/04/2018 fix this exception
+        }
+
+        return longTimeInMillis;
+    }
+
+    private static int getIntegerValue(String value) {
+        return Integer.parseInt(value);
+    }
 }

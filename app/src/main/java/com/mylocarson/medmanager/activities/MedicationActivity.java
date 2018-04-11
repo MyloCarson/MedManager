@@ -36,6 +36,7 @@ import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class MedicationActivity extends AppCompatActivity {
 
@@ -131,7 +132,7 @@ private Realm realm;
                             Medication medication = realm.createObject(Medication.class, UUID.randomUUID().toString());
                             medication.setName(medicationName_string);
                             medication.setDescription(description_string);
-                            medication.setDateCreated(new Date().toString());
+                            medication.setDateCreated(new Date());
                             Log.e(MainActivity.class.getSimpleName(), "execute: "+medication.toString() );
                         }
                     }, new Realm.Transaction.OnSuccess() {
@@ -179,14 +180,17 @@ private Realm realm;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         medRecycler.setLayoutManager(layoutManager);
         medRecycler.setItemAnimator(new DefaultItemAnimator());
-        medRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        medRecycler.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
 
     }
 
     private void getAllMedications(){
         ArrayList<Medication> medicationArrayList = new ArrayList<>();
         RealmQuery<Medication> medicationRealmQuery = realm.where(Medication.class);
-        RealmResults<Medication> realmResults = medicationRealmQuery.findAll();
+        RealmResults<Medication> realmResults = medicationRealmQuery
+                .sort("dateCreated", Sort.ASCENDING)
+                .findAll();
         medicationArrayList.addAll(realmResults);
         persistMedications.addAll(realmResults);
         setupRecycler(medicationArrayList);

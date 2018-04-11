@@ -220,8 +220,6 @@ public class ReminderActivity extends AppCompatActivity {
                 } else if (!Utilities.isEditTextValid(startTime)) {
                     Utilities.validateEditText(startTime);
                 }else{
-
-
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override
                         public void execute(@NonNull Realm realm) {
@@ -232,21 +230,26 @@ public class ReminderActivity extends AppCompatActivity {
                             reminder.setStartDate(startDate_string);
                             reminder.setEndDate(endDate_string);
                             reminder.setStartTime(start_time_string);
+
                             Log.e(TAG, "execute: " + reminder.toString());
+
 
                         }
                     }, new Realm.Transaction.OnSuccess() {
                         @Override
                         public void onSuccess() {
                             Toast.makeText(context, "" + Integer.valueOf(interval_string), Toast.LENGTH_SHORT).show();
-                            if (Integer.valueOf(interval_string) == 1){
-                                Toast.makeText(ReminderActivity.this, "Here", Toast.LENGTH_SHORT).show();
-                                alarmScheduler.setAlarmNow(context, startDate_string, endDate_string, start_time_string, reminderID);
-                            }else{
-                                Toast.makeText(ReminderActivity.this, "Bigger here", Toast.LENGTH_SHORT).show();
-                                alarmScheduler.setAlarm(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
+//                            if (Integer.valueOf(interval_string) == 1){
+//                                Toast.makeText(ReminderActivity.this, "Here", Toast.LENGTH_SHORT).show();
+//                                alarmScheduler.setAlarmNow(context, startDate_string, endDate_string, start_time_string, reminderID);
+//                            }else{
+//                                Toast.makeText(ReminderActivity.this, "Bigger here", Toast.LENGTH_SHORT).show();
+//                                alarmScheduler.setAlarm(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
+//
+//                            }
 
-                            }
+                            alarmScheduler.set(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
+
                             getAllReminders();
                             alertDialog.dismiss();
 
@@ -257,6 +260,7 @@ public class ReminderActivity extends AppCompatActivity {
                             Log.e(TAG, "onError: ",error );
                         }
                     });
+
 
                 }
             }
