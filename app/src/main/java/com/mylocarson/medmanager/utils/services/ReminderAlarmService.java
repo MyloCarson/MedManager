@@ -37,6 +37,12 @@ public class ReminderAlarmService extends IntentService {
         super(TAG);
     }
 
+    /**
+     * this method returns a pendingIntent for a given reminder
+     *
+     * @param context
+     * @param reminderID
+     **/
     public static PendingIntent getPendingIntent(Context context, String reminderID){
         Intent intent = new Intent(context,ReminderAlarmService.class);
         intent.putExtra(Constants.REMINDER_ID,reminderID);
@@ -81,9 +87,10 @@ public class ReminderAlarmService extends IntentService {
         notificationManager.notify(NOTIFICATION_ID,builder.build());
 
 
-
     }
 
+    /** this method fetches the Medication Name for a given reminder
+     * @param reminderID **/
     @SuppressWarnings("ConstantConditions")
     private String getReminderMedicationName(String reminderID){
         Realm realm = Realm.getDefaultInstance();

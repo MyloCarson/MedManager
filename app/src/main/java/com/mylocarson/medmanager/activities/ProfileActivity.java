@@ -107,6 +107,9 @@ public class ProfileActivity extends AppCompatActivity {
         email.setClickable(true);
     }
 
+    /**
+     * this method shows a dialog if the user's email is not verified yet
+     **/
     private AlertDialog showVerifyAlert(String email) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("MedManager");
@@ -128,11 +131,19 @@ public class ProfileActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    /**
+     * this method sets value to the necessary views
+     *
+     * @param name
+     * @param email
+     **/
+    @SuppressWarnings("JavaDoc")
     private void setViews(@NonNull String name, @NonNull String email) {
         this.email.setText(email);
         this.name.setText(name);
     }
 
+    /** this method sends a verification email to the user**/
     private void verifyEmail() {
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -146,11 +157,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /** this method fires an intent to the MainActivity**/
     private void proceed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * this method updates a user's profile given an email and a displayname
+     *
+     * @param displayname
+     * @param email
+     **/
+    @SuppressWarnings("JavaDoc")
     private void updateProfile(String displayname, final String email) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(displayname)
@@ -170,6 +189,9 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /** this method updates a supplied email address using Firebase
+     * @param email**/
+    @SuppressWarnings("JavaDoc")
     private void updateEmail(String email) {
         user.updateEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -188,6 +210,8 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /** this method shows dialog that tells the user that MedManger is currently updating his/her
+     * profile**/
     private AlertDialog loadingAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Updating ....");

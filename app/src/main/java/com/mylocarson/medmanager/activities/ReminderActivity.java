@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.mylocarson.medmanager.R;
 import com.mylocarson.medmanager.adapters.ReminderAdapter;
@@ -127,6 +126,12 @@ public class ReminderActivity extends AppCompatActivity {
         reminderForm(this);
     }
 
+    /**
+     * ReminderActivity#reminderForm() this method shows a dialog for the user to enter the reminder.
+     *
+     * @param context
+     **/
+    @SuppressWarnings("JavaDoc")
     private void reminderForm(final Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = getLayoutInflater();
@@ -154,6 +159,7 @@ public class ReminderActivity extends AppCompatActivity {
         final ArrayList<String> arrayList = new ArrayList<>();
         final ArrayList<String> medicationIdArrayList = new ArrayList<>();
 
+        /* this sets the first option of the spinner as hint**/
         arrayList.add("Medications");
         medicationIdArrayList.add("");
 
@@ -180,7 +186,6 @@ public class ReminderActivity extends AppCompatActivity {
                     isSelected = false;
                 }
 
-                Log.d(TAG, "onItemSelected: "+spinner_Value);
             }
 
             @Override
@@ -190,7 +195,9 @@ public class ReminderActivity extends AppCompatActivity {
             }
         });
 
-
+        /* when user clicks on the addMed button,
+          the views are validated ,
+          if they are all valid, then we insert the reminder into the Realm database**/
         addMed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,8 +216,7 @@ public class ReminderActivity extends AppCompatActivity {
                     Utilities.validateEditText(interval);
                 }else if (Integer.parseInt(interval.getText().toString()) == 0){
                     Snackbar.make(spinner,"Frequency must be greater than 0",Snackbar.LENGTH_SHORT).show();
-                }
-                else if (!Utilities.isEditTextValid(startDate)){
+                } else if (!Utilities.isEditTextValid(startDate)){
                     Utilities.validateEditText(startDate);
                 }else if (!Utilities.isEditTextValid(endDate)){
                     Utilities.validateEditText(endDate);
@@ -231,24 +237,13 @@ public class ReminderActivity extends AppCompatActivity {
                             reminder.setEndDate(endDate_string);
                             reminder.setStartTime(start_time_string);
 
-                            Log.e(TAG, "execute: " + reminder.toString());
-
 
                         }
                     }, new Realm.Transaction.OnSuccess() {
                         @Override
                         public void onSuccess() {
-                            Toast.makeText(context, "" + Integer.valueOf(interval_string), Toast.LENGTH_SHORT).show();
-//                            if (Integer.valueOf(interval_string) == 1){
-//                                Toast.makeText(ReminderActivity.this, "Here", Toast.LENGTH_SHORT).show();
-//                                alarmScheduler.setAlarmNow(context, startDate_string, endDate_string, start_time_string, reminderID);
-//                            }else{
-//                                Toast.makeText(ReminderActivity.this, "Bigger here", Toast.LENGTH_SHORT).show();
-//                                alarmScheduler.setAlarm(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
-//
-//                            }
 
-                            alarmScheduler.set(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
+                            alarmScheduler.setAlarm(context, startDate_string, start_time_string, Integer.parseInt(interval_string), reminderID);
 
                             getAllReminders();
                             alertDialog.dismiss();
@@ -298,6 +293,12 @@ public class ReminderActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * this method sets up the recycler view with an arraylist of reminders
+     *
+     * @param reminderArrayList
+     **/
+    @SuppressWarnings("JavaDoc")
     private void setupRecycler(@NonNull ArrayList<Reminder> reminderArrayList) {
         if(!(reminderArrayList.size() > 0)){
             Utilities.toggleVisibility(1,emptyReminderStateLayout);
@@ -315,6 +316,8 @@ public class ReminderActivity extends AppCompatActivity {
         reminderRecycler.setItemAnimator(new DefaultItemAnimator());
     }
 
+    /** this method fetches all the reminders from the Realm database,
+     * and also saves these records in an arrayList inorder to persist the state of the UI when changes occurs **/
     private void getAllReminders(){
         ArrayList<Reminder> reminders = new ArrayList<>();
         RealmQuery<Reminder> realmQuery = realm.where(Reminder.class);

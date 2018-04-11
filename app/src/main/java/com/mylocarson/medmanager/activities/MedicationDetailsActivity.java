@@ -115,6 +115,11 @@ public class MedicationDetailsActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * this method fetches the remidner given reminder_id
+     *
+     * @param reminder_id
+     **/
     private Reminder fetchReminder(String reminder_id){
         RealmQuery<Reminder>  realmQuery = realm.where(Reminder.class);
 
@@ -122,11 +127,16 @@ public class MedicationDetailsActivity extends AppCompatActivity {
 
     }
 
+    /**this method fetches the medication given a medication_id
+     * @param medication_id **/
     private Medication fetchMedication(String medication_id){
         RealmQuery<Medication> realmQuery = realm.where(Medication.class);
         return realmQuery.equalTo("id", medication_id).findFirst();
     }
 
+    /** this method sets the necessary view
+     * @param medication
+     * @param reminder **/
     private void setupViews(Medication medication, Reminder reminder){
         medDescription.setText(medication.getDescription());
         String frequencyString = reminder.getFrequency() == 1 ? Integer.toString(reminder.getFrequency()) + " time" :
@@ -137,6 +147,7 @@ public class MedicationDetailsActivity extends AppCompatActivity {
         endate.setText(reminder.getEndDate());
     }
 
+    /**this method shows a dialog to confirm if the user actually wants to delete the reminder **/
     private AlertDialog confirmDelete (){
         final AlertDialog.Builder  builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.app_name);
@@ -157,6 +168,8 @@ public class MedicationDetailsActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    /** this method delete the present reminder from the Realm Database
+     *  and also cancels the alarm for it**/
     private void deleteReminder(){
         if (reminder!=null){
             realm.executeTransaction(new Realm.Transaction() {

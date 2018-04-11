@@ -14,11 +14,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -33,21 +31,34 @@ public class Utilities {
 
     private Utilities(){}
 
+    /**
+     * this method checks if  editText has a value, then sets its error if otherwise
+     *
+     * @param editTexts
+     **/
     public static void validateEditText(EditText...editTexts){
-        for (EditText editText: editTexts) {
-            if (editText.getText().toString().isEmpty() && !(editText.getText().toString().length() > 0) ){
+        for (EditText editText : editTexts) {
+            if (editText.getText().toString().isEmpty() &&
+                    !(editText.getText().toString().length() > 0) ){
                 editText.setError(Constants.EDIT_TEXT_REQUIRED);
             }
         }
     }
 
+    /** this method checks if the editText has content in it
+     * and returns true if so or false if otherwise
+     * @param editText **/
     public static boolean isEditTextValid(EditText editText){
         boolean result;
-        result = !(editText.getText().toString().isEmpty() && !(editText.getText().toString().length() > 0));
+        result = !(editText.getText().toString().isEmpty() &&
+                !(editText.getText().toString().length() > 0));
 
         return result;
     }
 
+    /** this method converts a Date into a readable string.
+     * It basically calculates how long ago a medication was added to MedManager.
+     * @param mDate **/
     public static String  convertDate(@NonNull String mDate){
         String newDateString = "";
         String dDate;
@@ -55,11 +66,13 @@ public class Utilities {
         Date mdate;
         Date theDate;
         Date today;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser
+                = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
 
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleFormat = new SimpleDateFormat("E MMM d yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleFormat
+                = new SimpleDateFormat("E MMM d yyyy");
         try {
             mdate = parser.parse(mDate);
             dDate = simpleDateFormat.format(mdate);
@@ -75,8 +88,7 @@ public class Utilities {
 
             if (diffMins <= 0 && diffHours <=0 && diffDays <=0){
                 newDateString = ""+diffSeconds+" secs ago";
-            }
-            else if (diffMins > 0 && diffMins < 60 && diffHours < 1 && diffDays < 1){
+            } else if (diffMins > 0 && diffMins < 60 && diffHours < 1 && diffDays < 1){
                 newDateString = ""+diffMins+" mins ago";
             }else if (diffHours <= 23 && diffDays <= 0){
                 newDateString =""+diffHours+" hours ago";
@@ -104,7 +116,12 @@ public class Utilities {
 
     }
 
-    public static ArrayAdapter<String> arrayAdapter(Context context,String[] arrayOfStrings){
+    /** this is a custom ArrayAdapter for a Spinner.
+     * It makes sure the first item is not selectable
+     *  @param context
+     * @param arrayOfStrings
+     * **/
+    public static ArrayAdapter<String> arrayAdapter(Context context, String[] arrayOfStrings){
         return new ArrayAdapter<String>(
                 context, android.R.layout.simple_list_item_1, arrayOfStrings) {
             @Override
@@ -128,6 +145,9 @@ public class Utilities {
         };
     }
 
+    /** This method hides or shows views
+     * @param value
+     * @param views **/
     public static void toggleVisibility(int value, View...views){
         switch (value){
             case 0:
@@ -143,66 +163,41 @@ public class Utilities {
 
     }
 
+    /** this method shows DatePicker
+     * @param context
+     * @param editText **/
     public  static void showDatePicker(Context context, final EditText editText){
         Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month++;
-                editText.setText(day +"/"+ month  +"/" +year);
-            }
-        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        month++;
+                        editText.setText(day +"/"+ month  +"/" +year);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
+    /** this method shows TimePicker
+     * @param context
+     * @param editText **/
     public static void showTimePicker(Context context, final EditText editText) {
         Calendar calendar = Calendar.getInstance();
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                editText.setText("" + hour + ":" + minutes);
-            }
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
+                        editText.setText("" + hour + ":" + minutes);
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
         timePickerDialog.show();
     }
 
-    public static ArrayList<Long> getArrayListOfLongTimeMillis(String startDate, String endDate, String startTime) {
-        ArrayList<Long> longArrayListOfTimeMillis = new ArrayList<>();
 
-        Date fromDate,toDate;
-        Calendar calendar = new GregorianCalendar();
-
-        Calendar calendar2 = new GregorianCalendar();
-
-        startDate = startDate.concat(" " + startTime);
-        endDate = endDate.concat(" " + startTime);
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
-        try {
-            fromDate = simpleDateFormat.parse(startDate);
-            calendar.setTime(fromDate);
-//			System.out.println(date2);
-            toDate = simpleDateFormat.parse(endDate);
-            calendar2.setTime(toDate);
-            calendar.setTime(fromDate);
-
-
-            longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
-
-            while (calendar.before(calendar2)) {
-
-                calendar.add(Calendar.DATE, 1);
-                longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
-
-            }
-        }
-        catch (Exception e) {
-            // TODO: handle exception
-        }
-        return longArrayListOfTimeMillis;
-
-    }
-
+    /**this method calculates the time in milliseconds for the interval of a medication
+     * @param frequency  **/
     public static long calculateRepeatTime(int frequency){
         int hourInDay = 24 / frequency;
         int minutesInDay = 24 % frequency;
@@ -214,9 +209,13 @@ public class Utilities {
 
     }
 
+    /** this method checks if the startDate for a medication is not greater than the endDate
+     * @param startDate
+     * @param endDate **/
     public static boolean validateStartDate(String startDate, String endDate){
         boolean value = false;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("dd/MM/yyyy");
         Date fromDate,toDate;
 
         try {
@@ -231,59 +230,15 @@ public class Utilities {
         return value;
     }
 
-    public static ArrayList<Long> calculateAlarmtimeInMillis(Context context, String startDate, String startTime, int frequency) {
-        ArrayList<Long> longArrayListOfTimeMillis = new ArrayList<>();
-        Date offsetDate, fromDate;
-        int offsetHour, offsetMins;
-        Calendar calendar = Calendar.getInstance();
-        startDate = startDate.concat(" " + startTime);
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:MM");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourformat = new SimpleDateFormat("HH");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat minutesFormat = new SimpleDateFormat("MM");
-        try {
-            offsetDate = parser.parse(startDate);
-            fromDate = simpleDateFormat.parse(simpleDateFormat.format(offsetDate));
-            offsetHour = Integer.parseInt(hourformat.format(offsetDate));
-            offsetMins = Integer.parseInt(minutesFormat.format(offsetDate));
-            calendar.setTime(fromDate);
-            int range = 24 / frequency;
-
-            int newOffset;
-
-
-            for (int i = 0; i <= frequency; i++) {
-                newOffset = offsetHour + range++;
-                Toast.makeText(context, "" + newOffset, Toast.LENGTH_SHORT).show();
-
-                if (newOffset > 24) {
-                    newOffset = newOffset % 24;
-                    calendar.add(Calendar.DATE, 1);
-                    calendar.add(Calendar.HOUR_OF_DAY, newOffset);
-                    calendar.add(Calendar.MINUTE, offsetMins);
-                    longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
-                    Toast.makeText(context, "Longtime inner " + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
-                }
-                calendar.add(Calendar.HOUR_OF_DAY, newOffset);
-                calendar.add(Calendar.MINUTE, offsetMins);
-                longArrayListOfTimeMillis.add(calendar.getTimeInMillis());
-                Toast.makeText(context, "Longtime " + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (ParseException e) {
-            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "calculateAlarmtimeInMillis: ", e);
-        }
-
-        return longArrayListOfTimeMillis;
-
-    }
-
+    /**this method converts a date to a very easy readable string
+     * @param date  **/
     public static String convertToReadableDate(String date) {
         String value = "";
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("EEE MMM d yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser
+                = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format
+                = new SimpleDateFormat("EEE MMM d yyyy");
         Date fromDate;
 
         try {
@@ -296,15 +251,25 @@ public class Utilities {
         return value;
     }
 
+    /** this method calculates a time in milliseconds for startDate and startTime
+     * @param startDate
+     * @param startTime **/
     public static long calculateTimeInMillis(String startDate, String startTime) {
         long longTimeInMillis = 0L;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourformat = new SimpleDateFormat("HH:mm");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat minutesFormat = new SimpleDateFormat("mm");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat parser
+                = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourformat
+                = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat minutesFormat
+                = new SimpleDateFormat("mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat yearFormat
+                = new SimpleDateFormat("yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dayFormat
+                = new SimpleDateFormat("dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat monthFormat
+                = new SimpleDateFormat("MM");
 
         Calendar calendar = GregorianCalendar.getInstance();
         Date fromDate, selectedDate, selectedTime;
@@ -331,6 +296,8 @@ public class Utilities {
         return longTimeInMillis;
     }
 
+    /** this method converts String to Integer
+     * @param value **/
     private static int getIntegerValue(String value) {
         return Integer.parseInt(value);
     }
