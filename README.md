@@ -6,7 +6,7 @@
 
 * Install Git on your machine.
 * Open your terminal , switch to the working directory
-* Paste this command ``` git clone https://github.com/MyloCarson/NewsApp.git ```
+* Paste this command ``` git clone https://github.com/MyloCarson/MedManager.git ```
 * Open the project with Android studio.
 
 ## External Libraries Used
